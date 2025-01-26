@@ -4,20 +4,20 @@ grammar searchgrammar;
 // Parser rules
 clause: expr+;
 expr
-    : term
-    | '(' expr ')'
-    | expr OR expr
-    | expr AND expr
-    | expr CMP expr
-    | NOT expr
+    : term              #termExpr
+    | '(' expr ')'      #parensExpr
+    | expr OR expr      #orExpr
+    | expr AND expr     #andExpr
+    | expr CMP expr     #cmpExpr
+    | NOT expr          #notExpr
 ;
-
 
 term
     : literal_number
-    | STRING
+    | reference
     | literal_string;
 
+reference: STRING;
 literal_number: INTEGER | DECIMAL;
 literal_string: '"' STRING '"' | '\'' STRING '\'';
 
