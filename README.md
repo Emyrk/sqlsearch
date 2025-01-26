@@ -1,0 +1,1 @@
+This repo is experimenting with `pg_query` and how to convert a simple expression language into a SQL query.

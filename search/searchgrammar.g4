@@ -17,7 +17,7 @@ term
     | reference
     | literal_string;
 
-reference: STRING;
+reference: STRING ('.' STRING)*;
 literal_number: INTEGER | DECIMAL;
 literal_string: '"' STRING '"' | '\'' STRING '\'';
 

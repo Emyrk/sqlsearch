@@ -10,15 +10,24 @@ import (
 	pg_query "github.com/pganalyze/pg_query_go/v6"
 )
 
-// "42 < 10 && word < \"done\""
-func Convert(expr string) (string, error) {
+type Converter struct {
+	Refences map[string]string
+}
+
+func New(ref map[string]string) *Converter {
+	return &Converter{
+		Refences: ref,
+	}
+}
+
+func (c *Converter) Convert(expr string) (string, error) {
 	input := antlr.NewInputStream(expr)
 	lexer := parser.NewsearchgrammarLexer(input)
 	stream := antlr.NewCommonTokenStream(lexer, antlr.TokenDefaultChannel)
 	p := parser.NewsearchgrammarParser(stream)
 	clause := p.Clause()
 
-	v := visitor.New()
+	v := visitor.New(c.Refences)
 	antlr.ParseTreeWalkerDefault.Walk(v, clause)
 
 	n := v.Stack().Pop()

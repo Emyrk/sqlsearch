@@ -1,7 +1,9 @@
 package visitor
 
 import (
+	"fmt"
 	"strconv"
+	"strings"
 
 	"github.com/Emyrk/sqlsearch/search/parser"
 	"github.com/antlr4-go/antlr/v4"
@@ -10,32 +12,43 @@ import (
 
 var _ = pg_query.MakeAConstStrNode
 
+var _ antlr.ParseTreeListener = &SearchVisitor{}
+
 type SearchVisitor struct {
 	parser.BasesearchgrammarListener
 
 	stack *Stack[*pg_query.Node]
+	refs  map[string]*pg_query.Node
 }
 
-func New() *SearchVisitor {
+func (s *SearchVisitor) VisitTerminal(node antlr.TerminalNode) {}
+
+func (s *SearchVisitor) VisitErrorNode(node antlr.ErrorNode) {}
+
+func (s *SearchVisitor) EnterEveryRule(ctx antlr.ParserRuleContext) {}
+
+func (s *SearchVisitor) ExitEveryRule(ctx antlr.ParserRuleContext) {}
+
+func New(refs map[string]string) *SearchVisitor {
+	cref := make(map[string]*pg_query.Node, len(refs))
+	for k, v := range refs {
+		parts := strings.Split(v, ".")
+		fields := make([]*pg_query.Node, 0, len(parts))
+		for _, p := range parts {
+			fields = append(fields, pg_query.MakeStrNode(p))
+		}
+		cref[k] = pg_query.MakeColumnRefNode(fields, 0)
+	}
+
 	return &SearchVisitor{
 		stack: NewStack[*pg_query.Node](),
+		refs:  cref,
 	}
 }
 
 func (s *SearchVisitor) Stack() *Stack[*pg_query.Node] {
 	return s.stack
 }
-
-//func (s *SearchVisitor) VisitTerminal(node antlr.TerminalNode) {}
-//
-//// VisitErrorNode is called when an error node is visited.
-//func (s *SearchVisitor) VisitErrorNode(node antlr.ErrorNode) {}
-
-//// EnterEveryRule is called when any rule is entered.
-//func (s *BasesearchgrammarListener) EnterEveryRule(ctx antlr.ParserRuleContext) {}
-//
-//// ExitEveryRule is called when any rule is exited.
-//func (s *BasesearchgrammarListener) ExitEveryRule(ctx antlr.ParserRuleContext) {}
 
 // EnterClause is called when production clause is entered.
 func (s *SearchVisitor) EnterClause(ctx *parser.ClauseContext) {
@@ -83,6 +96,19 @@ func (s *SearchVisitor) EnterLiteral_string(ctx *parser.Literal_stringContext) {
 
 // ExitLiteral_string is called when production literal_string is exited.
 func (s *SearchVisitor) ExitLiteral_string(ctx *parser.Literal_stringContext) {
-	node := pg_query.MakeAConstStrNode(ctx.GetText(), 0)
+	ref := ctx.GetChild(1).(antlr.ParseTree)
+	text := ref.GetText()
+	node := pg_query.MakeAConstStrNode(text, 0)
 	s.stack.Push(node)
+}
+
+// ExitReference is called when production reference is exited.
+func (s *SearchVisitor) ExitReference(ctx *parser.ReferenceContext) {
+	ref := ctx.GetText()
+	columnRef, ok := s.refs[ref]
+	if !ok {
+		panic(fmt.Sprintf("%q reference not found", ref))
+	}
+
+	s.stack.Push(columnRef)
 }
