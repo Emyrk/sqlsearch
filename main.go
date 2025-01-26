@@ -1,22 +1,36 @@
 package main
 
 import (
+	"flag"
 	"fmt"
+	"log"
+	"os"
 
-	pg_query "github.com/pganalyze/pg_query_go/v6"
+	"github.com/Emyrk/sqlsearch/search"
 )
 
 func main() {
-	result, err := pg_query.Parse("SELECT 42")
-	if err != nil {
-		panic(err)
+	log.SetOutput(os.Stderr)
+	s := search.New(map[string]string{
+		"id":           "workspaces.id",
+		"owner_id":     "workspaces.owner_id",
+		"template_id":  "workspaces.template_id",
+		"name":         "workspaces.name",
+		"deleted":      "workspaces.deleted",
+		"organization": "workspaces.organization",
+	})
+	flag.Parse()
+
+	if len(flag.Args()) == 0 {
+		log.Fatal("Missing search expression")
+		return
 	}
 
-	result.Stmts[0].Stmt.GetSelectStmt().GetTargetList()[0].GetResTarget().Val = pg_query.MakeAConstStrNode("Hello World", -1)
-
-	stmt, err := pg_query.Deparse(result)
+	sqlExpr, err := s.Convert(flag.Arg(0))
 	if err != nil {
-		panic(err)
+		log.Fatal(err.Error())
+		return
 	}
-	fmt.Printf("%s\n", stmt)
+	fmt.Println("Output is SQL to place in WHERE clause:")
+	fmt.Println(sqlExpr)
 }

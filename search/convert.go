@@ -30,7 +30,19 @@ func (c *Converter) Convert(expr string) (string, error) {
 	v := visitor.New(c.Refences)
 	antlr.ParseTreeWalkerDefault.Walk(v, clause)
 
-	n := v.Stack().Pop()
+	//fmt.Println(antlr.TreesStringTree(clause, nil, nil))
+
+	var n *pg_query.Node
+	if v.Stack().Len() == 1 {
+		n = v.Stack().Pop()
+	} else {
+		nodes := make([]*pg_query.Node, 0, v.Stack().Len())
+		for !v.Stack().IsEmpty() {
+			nodes = append(nodes, v.Stack().Pop())
+		}
+		n = pg_query.MakeBoolExprNode(pg_query.BoolExprType_OR_EXPR, nodes, 0)
+	}
+
 	dsql, err := pg_query.Deparse(&pg_query.ParseResult{
 		Version: 0,
 		Stmts: []*pg_query.RawStmt{

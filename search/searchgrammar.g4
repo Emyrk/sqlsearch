@@ -2,7 +2,7 @@ grammar searchgrammar;
 
 
 // Parser rules
-clause: expr+;
+clause: (expr (SEMICOLON)?)+;
 expr
     : term              #termExpr
     | '(' expr ')'      #parensExpr
@@ -44,6 +44,7 @@ DECIMAL: '-'? [0-9]+ '.' [0-9]+;
 
 // Comparisons
 CMP: '=' | '==' | '!=' | '>' | '>=' | '<' | '<=';
+SEMICOLON: ';';
 
 fragment LOWERCASE  : [a-z] ;
 fragment UPPERCASE  : [A-Z] ;

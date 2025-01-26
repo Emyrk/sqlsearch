@@ -19,9 +19,16 @@ func TestConvert(t *testing.T) {
 			input:  "42 < 10",
 			expSql: "42 < 10",
 		},
+		//{
+		//	input:  "color = 'red'",
+		//	expSql: "users.favorite_color = 'red'",
+		//	refs: map[string]string{
+		//		"color": "users.favorite_color",
+		//	},
+		//},
 		{
-			input:  "color = 'red'",
-			expSql: "users.favorite_color = 'red'",
+			input:  "color = 'red'; color = 'blue'",
+			expSql: "users.favorite_color = 'red' OR users.favorite_color = 'blue'",
 			refs: map[string]string{
 				"color": "users.favorite_color",
 			},
@@ -53,7 +60,7 @@ func TestConvert(t *testing.T) {
 }
 
 func TestEx(t *testing.T) {
-	tree, err := pg_query.Parse("SELECT * WHERE workspaces.count < 10")
+	tree, err := pg_query.Parse("SELECT * WHERE workspaces.count = 'test'")
 	require.NoError(t, err)
 
 	fmt.Println(tree.String())

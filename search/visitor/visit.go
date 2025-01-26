@@ -28,7 +28,6 @@ func (s *SearchVisitor) VisitErrorNode(node antlr.ErrorNode) {}
 func (s *SearchVisitor) EnterEveryRule(ctx antlr.ParserRuleContext) {}
 
 func (s *SearchVisitor) ExitEveryRule(ctx antlr.ParserRuleContext) {}
-
 func New(refs map[string]string) *SearchVisitor {
 	cref := make(map[string]*pg_query.Node, len(refs))
 	for k, v := range refs {
@@ -55,7 +54,15 @@ func (s *SearchVisitor) EnterClause(ctx *parser.ClauseContext) {
 }
 
 // ExitClause is called when production clause is exited.
-func (s *SearchVisitor) ExitClause(ctx *parser.ClauseContext) {}
+func (s *SearchVisitor) ExitClause(ctx *parser.ClauseContext) {
+	nodes := make([]*pg_query.Node, 0, s.Stack().Len())
+	for !s.Stack().IsEmpty() {
+		nodes = append(nodes, s.Stack().Pop())
+	}
+	n := pg_query.MakeBoolExprNode(pg_query.BoolExprType_OR_EXPR, nodes, 0)
+	s.stack.Push(nodes[0])
+	var _ = n
+}
 
 // EnterCmpExpr is called when production cmpExpr is entered.
 func (s *SearchVisitor) EnterCmpExpr(ctx *parser.CmpExprContext) {}
