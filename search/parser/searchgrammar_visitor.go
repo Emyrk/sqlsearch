@@ -8,12 +8,12 @@ import "github.com/antlr/antlr4/runtime/Go/antlr/v4"
 type searchgrammarVisitor interface {
 	antlr.ParseTreeVisitor
 
+	// Visit a parse tree produced by searchgrammarParser#clause.
+	VisitClause(ctx *ClauseContext) interface{}
+
 	// Visit a parse tree produced by searchgrammarParser#expr.
 	VisitExpr(ctx *ExprContext) interface{}
 
 	// Visit a parse tree produced by searchgrammarParser#term.
 	VisitTerm(ctx *TermContext) interface{}
-
-	// Visit a parse tree produced by searchgrammarParser#factor.
-	VisitFactor(ctx *FactorContext) interface{}
 }

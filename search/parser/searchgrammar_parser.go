@@ -33,29 +33,33 @@ var searchgrammarParserStaticData struct {
 func searchgrammarParserInit() {
 	staticData := &searchgrammarParserStaticData
 	staticData.literalNames = []string{
-		"", "'+'", "'-'", "'*'", "'/'", "'('", "')'",
+		"", "'('", "')'",
 	}
 	staticData.symbolicNames = []string{
-		"", "", "", "", "", "", "", "NUMBER", "WS",
+		"", "", "", "OR", "AND", "NOT", "INTEGER", "DECIMAL", "CMP", "STRING",
+		"WS",
 	}
 	staticData.ruleNames = []string{
-		"expr", "term", "factor",
+		"clause", "expr", "term",
 	}
 	staticData.predictionContextCache = antlr.NewPredictionContextCache()
 	staticData.serializedATN = []int32{
-		4, 1, 8, 32, 2, 0, 7, 0, 2, 1, 7, 1, 2, 2, 7, 2, 1, 0, 1, 0, 1, 0, 5, 0,
-		10, 8, 0, 10, 0, 12, 0, 13, 9, 0, 1, 1, 1, 1, 1, 1, 5, 1, 18, 8, 1, 10,
-		1, 12, 1, 21, 9, 1, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 3, 2, 30,
-		8, 2, 1, 2, 0, 0, 3, 0, 2, 4, 0, 2, 1, 0, 1, 2, 1, 0, 3, 4, 32, 0, 6, 1,
-		0, 0, 0, 2, 14, 1, 0, 0, 0, 4, 29, 1, 0, 0, 0, 6, 11, 3, 2, 1, 0, 7, 8,
-		7, 0, 0, 0, 8, 10, 3, 2, 1, 0, 9, 7, 1, 0, 0, 0, 10, 13, 1, 0, 0, 0, 11,
-		9, 1, 0, 0, 0, 11, 12, 1, 0, 0, 0, 12, 1, 1, 0, 0, 0, 13, 11, 1, 0, 0,
-		0, 14, 19, 3, 4, 2, 0, 15, 16, 7, 1, 0, 0, 16, 18, 3, 4, 2, 0, 17, 15,
-		1, 0, 0, 0, 18, 21, 1, 0, 0, 0, 19, 17, 1, 0, 0, 0, 19, 20, 1, 0, 0, 0,
-		20, 3, 1, 0, 0, 0, 21, 19, 1, 0, 0, 0, 22, 30, 5, 7, 0, 0, 23, 24, 5, 5,
-		0, 0, 24, 25, 3, 0, 0, 0, 25, 26, 5, 6, 0, 0, 26, 30, 1, 0, 0, 0, 27, 28,
-		7, 0, 0, 0, 28, 30, 3, 4, 2, 0, 29, 22, 1, 0, 0, 0, 29, 23, 1, 0, 0, 0,
-		29, 27, 1, 0, 0, 0, 30, 5, 1, 0, 0, 0, 3, 11, 19, 29,
+		4, 1, 10, 38, 2, 0, 7, 0, 2, 1, 7, 1, 2, 2, 7, 2, 1, 0, 4, 0, 8, 8, 0,
+		11, 0, 12, 0, 9, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 1,
+		20, 8, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 5, 1, 31,
+		8, 1, 10, 1, 12, 1, 34, 9, 1, 1, 2, 1, 2, 1, 2, 0, 1, 2, 3, 0, 2, 4, 0,
+		1, 2, 0, 6, 7, 9, 9, 40, 0, 7, 1, 0, 0, 0, 2, 19, 1, 0, 0, 0, 4, 35, 1,
+		0, 0, 0, 6, 8, 3, 2, 1, 0, 7, 6, 1, 0, 0, 0, 8, 9, 1, 0, 0, 0, 9, 7, 1,
+		0, 0, 0, 9, 10, 1, 0, 0, 0, 10, 1, 1, 0, 0, 0, 11, 12, 6, 1, -1, 0, 12,
+		20, 3, 4, 2, 0, 13, 14, 5, 1, 0, 0, 14, 15, 3, 2, 1, 0, 15, 16, 5, 2, 0,
+		0, 16, 20, 1, 0, 0, 0, 17, 18, 5, 5, 0, 0, 18, 20, 3, 2, 1, 1, 19, 11,
+		1, 0, 0, 0, 19, 13, 1, 0, 0, 0, 19, 17, 1, 0, 0, 0, 20, 32, 1, 0, 0, 0,
+		21, 22, 10, 4, 0, 0, 22, 23, 5, 3, 0, 0, 23, 31, 3, 2, 1, 5, 24, 25, 10,
+		3, 0, 0, 25, 26, 5, 4, 0, 0, 26, 31, 3, 2, 1, 4, 27, 28, 10, 2, 0, 0, 28,
+		29, 5, 8, 0, 0, 29, 31, 3, 2, 1, 3, 30, 21, 1, 0, 0, 0, 30, 24, 1, 0, 0,
+		0, 30, 27, 1, 0, 0, 0, 31, 34, 1, 0, 0, 0, 32, 30, 1, 0, 0, 0, 32, 33,
+		1, 0, 0, 0, 33, 3, 1, 0, 0, 0, 34, 32, 1, 0, 0, 0, 35, 36, 7, 0, 0, 0,
+		36, 5, 1, 0, 0, 0, 4, 9, 19, 30, 32,
 	}
 	deserializer := antlr.NewATNDeserializer(nil)
 	staticData.atn = deserializer.Deserialize(staticData.serializedATN)
@@ -93,23 +97,169 @@ func NewsearchgrammarParser(input antlr.TokenStream) *searchgrammarParser {
 
 // searchgrammarParser tokens.
 const (
-	searchgrammarParserEOF    = antlr.TokenEOF
-	searchgrammarParserT__0   = 1
-	searchgrammarParserT__1   = 2
-	searchgrammarParserT__2   = 3
-	searchgrammarParserT__3   = 4
-	searchgrammarParserT__4   = 5
-	searchgrammarParserT__5   = 6
-	searchgrammarParserNUMBER = 7
-	searchgrammarParserWS     = 8
+	searchgrammarParserEOF     = antlr.TokenEOF
+	searchgrammarParserT__0    = 1
+	searchgrammarParserT__1    = 2
+	searchgrammarParserOR      = 3
+	searchgrammarParserAND     = 4
+	searchgrammarParserNOT     = 5
+	searchgrammarParserINTEGER = 6
+	searchgrammarParserDECIMAL = 7
+	searchgrammarParserCMP     = 8
+	searchgrammarParserSTRING  = 9
+	searchgrammarParserWS      = 10
 )
 
 // searchgrammarParser rules.
 const (
-	searchgrammarParserRULE_expr   = 0
-	searchgrammarParserRULE_term   = 1
-	searchgrammarParserRULE_factor = 2
+	searchgrammarParserRULE_clause = 0
+	searchgrammarParserRULE_expr   = 1
+	searchgrammarParserRULE_term   = 2
 )
+
+// IClauseContext is an interface to support dynamic dispatch.
+type IClauseContext interface {
+	antlr.ParserRuleContext
+
+	// GetParser returns the parser.
+	GetParser() antlr.Parser
+
+	// Getter signatures
+	AllExpr() []IExprContext
+	Expr(i int) IExprContext
+
+	// IsClauseContext differentiates from other interfaces.
+	IsClauseContext()
+}
+
+type ClauseContext struct {
+	*antlr.BaseParserRuleContext
+	parser antlr.Parser
+}
+
+func NewEmptyClauseContext() *ClauseContext {
+	var p = new(ClauseContext)
+	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(nil, -1)
+	p.RuleIndex = searchgrammarParserRULE_clause
+	return p
+}
+
+func (*ClauseContext) IsClauseContext() {}
+
+func NewClauseContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *ClauseContext {
+	var p = new(ClauseContext)
+
+	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(parent, invokingState)
+
+	p.parser = parser
+	p.RuleIndex = searchgrammarParserRULE_clause
+
+	return p
+}
+
+func (s *ClauseContext) GetParser() antlr.Parser { return s.parser }
+
+func (s *ClauseContext) AllExpr() []IExprContext {
+	children := s.GetChildren()
+	len := 0
+	for _, ctx := range children {
+		if _, ok := ctx.(IExprContext); ok {
+			len++
+		}
+	}
+
+	tst := make([]IExprContext, len)
+	i := 0
+	for _, ctx := range children {
+		if t, ok := ctx.(IExprContext); ok {
+			tst[i] = t.(IExprContext)
+			i++
+		}
+	}
+
+	return tst
+}
+
+func (s *ClauseContext) Expr(i int) IExprContext {
+	var t antlr.RuleContext
+	j := 0
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(IExprContext); ok {
+			if j == i {
+				t = ctx.(antlr.RuleContext)
+				break
+			}
+			j++
+		}
+	}
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(IExprContext)
+}
+
+func (s *ClauseContext) GetRuleContext() antlr.RuleContext {
+	return s
+}
+
+func (s *ClauseContext) ToStringTree(ruleNames []string, recog antlr.Recognizer) string {
+	return antlr.TreesStringTree(s, ruleNames, recog)
+}
+
+func (s *ClauseContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
+	switch t := visitor.(type) {
+	case searchgrammarVisitor:
+		return t.VisitClause(s)
+
+	default:
+		return t.VisitChildren(s)
+	}
+}
+
+func (p *searchgrammarParser) Clause() (localctx IClauseContext) {
+	this := p
+	_ = this
+
+	localctx = NewClauseContext(p, p.GetParserRuleContext(), p.GetState())
+	p.EnterRule(localctx, 0, searchgrammarParserRULE_clause)
+	var _la int
+
+	defer func() {
+		p.ExitRule()
+	}()
+
+	defer func() {
+		if err := recover(); err != nil {
+			if v, ok := err.(antlr.RecognitionException); ok {
+				localctx.SetException(v)
+				p.GetErrorHandler().ReportError(p, v)
+				p.GetErrorHandler().Recover(p, v)
+			} else {
+				panic(err)
+			}
+		}
+	}()
+
+	p.EnterOuterAlt(localctx, 1)
+	p.SetState(7)
+	p.GetErrorHandler().Sync(p)
+	_la = p.GetTokenStream().LA(1)
+
+	for ok := true; ok; ok = ((int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&738) != 0) {
+		{
+			p.SetState(6)
+			p.expr(0)
+		}
+
+		p.SetState(9)
+		p.GetErrorHandler().Sync(p)
+		_la = p.GetTokenStream().LA(1)
+	}
+
+	return localctx
+}
 
 // IExprContext is an interface to support dynamic dispatch.
 type IExprContext interface {
@@ -119,8 +269,13 @@ type IExprContext interface {
 	GetParser() antlr.Parser
 
 	// Getter signatures
-	AllTerm() []ITermContext
-	Term(i int) ITermContext
+	Term() ITermContext
+	AllExpr() []IExprContext
+	Expr(i int) IExprContext
+	NOT() antlr.TerminalNode
+	OR() antlr.TerminalNode
+	AND() antlr.TerminalNode
+	CMP() antlr.TerminalNode
 
 	// IsExprContext differentiates from other interfaces.
 	IsExprContext()
@@ -153,20 +308,36 @@ func NewExprContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokin
 
 func (s *ExprContext) GetParser() antlr.Parser { return s.parser }
 
-func (s *ExprContext) AllTerm() []ITermContext {
+func (s *ExprContext) Term() ITermContext {
+	var t antlr.RuleContext
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(ITermContext); ok {
+			t = ctx.(antlr.RuleContext)
+			break
+		}
+	}
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(ITermContext)
+}
+
+func (s *ExprContext) AllExpr() []IExprContext {
 	children := s.GetChildren()
 	len := 0
 	for _, ctx := range children {
-		if _, ok := ctx.(ITermContext); ok {
+		if _, ok := ctx.(IExprContext); ok {
 			len++
 		}
 	}
 
-	tst := make([]ITermContext, len)
+	tst := make([]IExprContext, len)
 	i := 0
 	for _, ctx := range children {
-		if t, ok := ctx.(ITermContext); ok {
-			tst[i] = t.(ITermContext)
+		if t, ok := ctx.(IExprContext); ok {
+			tst[i] = t.(IExprContext)
 			i++
 		}
 	}
@@ -174,11 +345,11 @@ func (s *ExprContext) AllTerm() []ITermContext {
 	return tst
 }
 
-func (s *ExprContext) Term(i int) ITermContext {
+func (s *ExprContext) Expr(i int) IExprContext {
 	var t antlr.RuleContext
 	j := 0
 	for _, ctx := range s.GetChildren() {
-		if _, ok := ctx.(ITermContext); ok {
+		if _, ok := ctx.(IExprContext); ok {
 			if j == i {
 				t = ctx.(antlr.RuleContext)
 				break
@@ -191,7 +362,23 @@ func (s *ExprContext) Term(i int) ITermContext {
 		return nil
 	}
 
-	return t.(ITermContext)
+	return t.(IExprContext)
+}
+
+func (s *ExprContext) NOT() antlr.TerminalNode {
+	return s.GetToken(searchgrammarParserNOT, 0)
+}
+
+func (s *ExprContext) OR() antlr.TerminalNode {
+	return s.GetToken(searchgrammarParserOR, 0)
+}
+
+func (s *ExprContext) AND() antlr.TerminalNode {
+	return s.GetToken(searchgrammarParserAND, 0)
+}
+
+func (s *ExprContext) CMP() antlr.TerminalNode {
+	return s.GetToken(searchgrammarParserCMP, 0)
 }
 
 func (s *ExprContext) GetRuleContext() antlr.RuleContext {
@@ -213,15 +400,23 @@ func (s *ExprContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
 }
 
 func (p *searchgrammarParser) Expr() (localctx IExprContext) {
+	return p.expr(0)
+}
+
+func (p *searchgrammarParser) expr(_p int) (localctx IExprContext) {
 	this := p
 	_ = this
 
-	localctx = NewExprContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 0, searchgrammarParserRULE_expr)
-	var _la int
+	var _parentctx antlr.ParserRuleContext = p.GetParserRuleContext()
+	_parentState := p.GetState()
+	localctx = NewExprContext(p, p.GetParserRuleContext(), _parentState)
+	var _prevctx IExprContext = localctx
+	var _ antlr.ParserRuleContext = _prevctx // TODO: To prevent unused variable warning.
+	_startState := 2
+	p.EnterRecursionRule(localctx, 2, searchgrammarParserRULE_expr, _p)
 
 	defer func() {
-		p.ExitRule()
+		p.UnrollRecursionContexts(_parentctx)
 	}()
 
 	defer func() {
@@ -236,35 +431,117 @@ func (p *searchgrammarParser) Expr() (localctx IExprContext) {
 		}
 	}()
 
+	var _alt int
+
 	p.EnterOuterAlt(localctx, 1)
-	{
-		p.SetState(6)
-		p.Term()
-	}
-	p.SetState(11)
+	p.SetState(19)
 	p.GetErrorHandler().Sync(p)
-	_la = p.GetTokenStream().LA(1)
 
-	for _la == searchgrammarParserT__0 || _la == searchgrammarParserT__1 {
+	switch p.GetTokenStream().LA(1) {
+	case searchgrammarParserINTEGER, searchgrammarParserDECIMAL, searchgrammarParserSTRING:
 		{
-			p.SetState(7)
-			_la = p.GetTokenStream().LA(1)
-
-			if !(_la == searchgrammarParserT__0 || _la == searchgrammarParserT__1) {
-				p.GetErrorHandler().RecoverInline(p)
-			} else {
-				p.GetErrorHandler().ReportMatch(p)
-				p.Consume()
-			}
-		}
-		{
-			p.SetState(8)
+			p.SetState(12)
 			p.Term()
 		}
 
-		p.SetState(13)
+	case searchgrammarParserT__0:
+		{
+			p.SetState(13)
+			p.Match(searchgrammarParserT__0)
+		}
+		{
+			p.SetState(14)
+			p.expr(0)
+		}
+		{
+			p.SetState(15)
+			p.Match(searchgrammarParserT__1)
+		}
+
+	case searchgrammarParserNOT:
+		{
+			p.SetState(17)
+			p.Match(searchgrammarParserNOT)
+		}
+		{
+			p.SetState(18)
+			p.expr(1)
+		}
+
+	default:
+		panic(antlr.NewNoViableAltException(p, nil, nil, nil, nil, nil))
+	}
+	p.GetParserRuleContext().SetStop(p.GetTokenStream().LT(-1))
+	p.SetState(32)
+	p.GetErrorHandler().Sync(p)
+	_alt = p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 3, p.GetParserRuleContext())
+
+	for _alt != 2 && _alt != antlr.ATNInvalidAltNumber {
+		if _alt == 1 {
+			if p.GetParseListeners() != nil {
+				p.TriggerExitRuleEvent()
+			}
+			_prevctx = localctx
+			p.SetState(30)
+			p.GetErrorHandler().Sync(p)
+			switch p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 2, p.GetParserRuleContext()) {
+			case 1:
+				localctx = NewExprContext(p, _parentctx, _parentState)
+				p.PushNewRecursionContext(localctx, _startState, searchgrammarParserRULE_expr)
+				p.SetState(21)
+
+				if !(p.Precpred(p.GetParserRuleContext(), 4)) {
+					panic(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 4)", ""))
+				}
+				{
+					p.SetState(22)
+					p.Match(searchgrammarParserOR)
+				}
+				{
+					p.SetState(23)
+					p.expr(5)
+				}
+
+			case 2:
+				localctx = NewExprContext(p, _parentctx, _parentState)
+				p.PushNewRecursionContext(localctx, _startState, searchgrammarParserRULE_expr)
+				p.SetState(24)
+
+				if !(p.Precpred(p.GetParserRuleContext(), 3)) {
+					panic(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 3)", ""))
+				}
+				{
+					p.SetState(25)
+					p.Match(searchgrammarParserAND)
+				}
+				{
+					p.SetState(26)
+					p.expr(4)
+				}
+
+			case 3:
+				localctx = NewExprContext(p, _parentctx, _parentState)
+				p.PushNewRecursionContext(localctx, _startState, searchgrammarParserRULE_expr)
+				p.SetState(27)
+
+				if !(p.Precpred(p.GetParserRuleContext(), 2)) {
+					panic(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 2)", ""))
+				}
+				{
+					p.SetState(28)
+					p.Match(searchgrammarParserCMP)
+				}
+				{
+					p.SetState(29)
+					p.expr(3)
+				}
+
+			}
+
+		}
+		p.SetState(34)
 		p.GetErrorHandler().Sync(p)
-		_la = p.GetTokenStream().LA(1)
+		_alt = p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 3, p.GetParserRuleContext())
 	}
 
 	return localctx
@@ -278,8 +555,9 @@ type ITermContext interface {
 	GetParser() antlr.Parser
 
 	// Getter signatures
-	AllFactor() []IFactorContext
-	Factor(i int) IFactorContext
+	INTEGER() antlr.TerminalNode
+	DECIMAL() antlr.TerminalNode
+	STRING() antlr.TerminalNode
 
 	// IsTermContext differentiates from other interfaces.
 	IsTermContext()
@@ -312,45 +590,16 @@ func NewTermContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokin
 
 func (s *TermContext) GetParser() antlr.Parser { return s.parser }
 
-func (s *TermContext) AllFactor() []IFactorContext {
-	children := s.GetChildren()
-	len := 0
-	for _, ctx := range children {
-		if _, ok := ctx.(IFactorContext); ok {
-			len++
-		}
-	}
-
-	tst := make([]IFactorContext, len)
-	i := 0
-	for _, ctx := range children {
-		if t, ok := ctx.(IFactorContext); ok {
-			tst[i] = t.(IFactorContext)
-			i++
-		}
-	}
-
-	return tst
+func (s *TermContext) INTEGER() antlr.TerminalNode {
+	return s.GetToken(searchgrammarParserINTEGER, 0)
 }
 
-func (s *TermContext) Factor(i int) IFactorContext {
-	var t antlr.RuleContext
-	j := 0
-	for _, ctx := range s.GetChildren() {
-		if _, ok := ctx.(IFactorContext); ok {
-			if j == i {
-				t = ctx.(antlr.RuleContext)
-				break
-			}
-			j++
-		}
-	}
+func (s *TermContext) DECIMAL() antlr.TerminalNode {
+	return s.GetToken(searchgrammarParserDECIMAL, 0)
+}
 
-	if t == nil {
-		return nil
-	}
-
-	return t.(IFactorContext)
+func (s *TermContext) STRING() antlr.TerminalNode {
+	return s.GetToken(searchgrammarParserSTRING, 0)
 }
 
 func (s *TermContext) GetRuleContext() antlr.RuleContext {
@@ -376,7 +625,7 @@ func (p *searchgrammarParser) Term() (localctx ITermContext) {
 	_ = this
 
 	localctx = NewTermContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 2, searchgrammarParserRULE_term)
+	p.EnterRule(localctx, 4, searchgrammarParserRULE_term)
 	var _la int
 
 	defer func() {
@@ -397,206 +646,49 @@ func (p *searchgrammarParser) Term() (localctx ITermContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(14)
-		p.Factor()
-	}
-	p.SetState(19)
-	p.GetErrorHandler().Sync(p)
-	_la = p.GetTokenStream().LA(1)
-
-	for _la == searchgrammarParserT__2 || _la == searchgrammarParserT__3 {
-		{
-			p.SetState(15)
-			_la = p.GetTokenStream().LA(1)
-
-			if !(_la == searchgrammarParserT__2 || _la == searchgrammarParserT__3) {
-				p.GetErrorHandler().RecoverInline(p)
-			} else {
-				p.GetErrorHandler().ReportMatch(p)
-				p.Consume()
-			}
-		}
-		{
-			p.SetState(16)
-			p.Factor()
-		}
-
-		p.SetState(21)
-		p.GetErrorHandler().Sync(p)
+		p.SetState(35)
 		_la = p.GetTokenStream().LA(1)
+
+		if !((int64(_la) & ^0x3f) == 0 && ((int64(1)<<_la)&704) != 0) {
+			p.GetErrorHandler().RecoverInline(p)
+		} else {
+			p.GetErrorHandler().ReportMatch(p)
+			p.Consume()
+		}
 	}
 
 	return localctx
 }
 
-// IFactorContext is an interface to support dynamic dispatch.
-type IFactorContext interface {
-	antlr.ParserRuleContext
-
-	// GetParser returns the parser.
-	GetParser() antlr.Parser
-
-	// Getter signatures
-	NUMBER() antlr.TerminalNode
-	Expr() IExprContext
-	Factor() IFactorContext
-
-	// IsFactorContext differentiates from other interfaces.
-	IsFactorContext()
-}
-
-type FactorContext struct {
-	*antlr.BaseParserRuleContext
-	parser antlr.Parser
-}
-
-func NewEmptyFactorContext() *FactorContext {
-	var p = new(FactorContext)
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(nil, -1)
-	p.RuleIndex = searchgrammarParserRULE_factor
-	return p
-}
-
-func (*FactorContext) IsFactorContext() {}
-
-func NewFactorContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *FactorContext {
-	var p = new(FactorContext)
-
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(parent, invokingState)
-
-	p.parser = parser
-	p.RuleIndex = searchgrammarParserRULE_factor
-
-	return p
-}
-
-func (s *FactorContext) GetParser() antlr.Parser { return s.parser }
-
-func (s *FactorContext) NUMBER() antlr.TerminalNode {
-	return s.GetToken(searchgrammarParserNUMBER, 0)
-}
-
-func (s *FactorContext) Expr() IExprContext {
-	var t antlr.RuleContext
-	for _, ctx := range s.GetChildren() {
-		if _, ok := ctx.(IExprContext); ok {
-			t = ctx.(antlr.RuleContext)
-			break
+func (p *searchgrammarParser) Sempred(localctx antlr.RuleContext, ruleIndex, predIndex int) bool {
+	switch ruleIndex {
+	case 1:
+		var t *ExprContext = nil
+		if localctx != nil {
+			t = localctx.(*ExprContext)
 		}
-	}
-
-	if t == nil {
-		return nil
-	}
-
-	return t.(IExprContext)
-}
-
-func (s *FactorContext) Factor() IFactorContext {
-	var t antlr.RuleContext
-	for _, ctx := range s.GetChildren() {
-		if _, ok := ctx.(IFactorContext); ok {
-			t = ctx.(antlr.RuleContext)
-			break
-		}
-	}
-
-	if t == nil {
-		return nil
-	}
-
-	return t.(IFactorContext)
-}
-
-func (s *FactorContext) GetRuleContext() antlr.RuleContext {
-	return s
-}
-
-func (s *FactorContext) ToStringTree(ruleNames []string, recog antlr.Recognizer) string {
-	return antlr.TreesStringTree(s, ruleNames, recog)
-}
-
-func (s *FactorContext) Accept(visitor antlr.ParseTreeVisitor) interface{} {
-	switch t := visitor.(type) {
-	case searchgrammarVisitor:
-		return t.VisitFactor(s)
+		return p.Expr_Sempred(t, predIndex)
 
 	default:
-		return t.VisitChildren(s)
+		panic("No predicate with index: " + fmt.Sprint(ruleIndex))
 	}
 }
 
-func (p *searchgrammarParser) Factor() (localctx IFactorContext) {
+func (p *searchgrammarParser) Expr_Sempred(localctx antlr.RuleContext, predIndex int) bool {
 	this := p
 	_ = this
 
-	localctx = NewFactorContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 4, searchgrammarParserRULE_factor)
-	var _la int
+	switch predIndex {
+	case 0:
+		return p.Precpred(p.GetParserRuleContext(), 4)
 
-	defer func() {
-		p.ExitRule()
-	}()
+	case 1:
+		return p.Precpred(p.GetParserRuleContext(), 3)
 
-	defer func() {
-		if err := recover(); err != nil {
-			if v, ok := err.(antlr.RecognitionException); ok {
-				localctx.SetException(v)
-				p.GetErrorHandler().ReportError(p, v)
-				p.GetErrorHandler().Recover(p, v)
-			} else {
-				panic(err)
-			}
-		}
-	}()
-
-	p.SetState(29)
-	p.GetErrorHandler().Sync(p)
-
-	switch p.GetTokenStream().LA(1) {
-	case searchgrammarParserNUMBER:
-		p.EnterOuterAlt(localctx, 1)
-		{
-			p.SetState(22)
-			p.Match(searchgrammarParserNUMBER)
-		}
-
-	case searchgrammarParserT__4:
-		p.EnterOuterAlt(localctx, 2)
-		{
-			p.SetState(23)
-			p.Match(searchgrammarParserT__4)
-		}
-		{
-			p.SetState(24)
-			p.Expr()
-		}
-		{
-			p.SetState(25)
-			p.Match(searchgrammarParserT__5)
-		}
-
-	case searchgrammarParserT__0, searchgrammarParserT__1:
-		p.EnterOuterAlt(localctx, 3)
-		{
-			p.SetState(27)
-			_la = p.GetTokenStream().LA(1)
-
-			if !(_la == searchgrammarParserT__0 || _la == searchgrammarParserT__1) {
-				p.GetErrorHandler().RecoverInline(p)
-			} else {
-				p.GetErrorHandler().ReportMatch(p)
-				p.Consume()
-			}
-		}
-		{
-			p.SetState(28)
-			p.Factor()
-		}
+	case 2:
+		return p.Precpred(p.GetParserRuleContext(), 2)
 
 	default:
-		panic(antlr.NewNoViableAltException(p, nil, nil, nil, nil, nil))
+		panic("No predicate with index: " + fmt.Sprint(predIndex))
 	}
-
-	return localctx
 }

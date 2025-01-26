@@ -26,7 +26,7 @@
 
 
         devShellPackages = with pkgs; [
-          antlr4_12
+          antlr
         ];
       in
       {
